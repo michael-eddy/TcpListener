@@ -15,21 +15,26 @@ Public Class MainForm
         Try
             If String.IsNullOrEmpty(textBoxUrl.Text) = False Then
                 ListenerUri = $"http://*:{textBoxUrl.Text}/"
-                If IsNothing(Listener) = False Then
-                    NetSh.RegistRemove(ListenerUri)
-                    Listener.Close()
-                End If
-                Listener = New HttpListener()
-                If NetSh.RegistAddress(ListenerUri) = True Then
-                    Thread.Sleep(200)
-                    Listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous
-                    Listener.Prefixes.Add(ListenerUri)
-                    Listener.Start()
-                    Dim CallBackDelegate As AsyncCallback = AddressOf ListenerHandle
-                    Listener.BeginGetContext(CallBackDelegate, Listener)
-                    textBoxOutput.Text += $"监听中....{Environment.NewLine}"
+                If NetSh.IsUsed(textBoxUrl.Text) Then
+                    textBoxOutput.Text += $"{textBoxUrl.Text}端口已被占用！{Environment.NewLine}"
+                    textBoxUrl.Text = "0"
                 Else
-                    textBoxOutput.Text += $"注册URL失败！{Environment.NewLine}"
+                    If IsNothing(Listener) = False Then
+                        NetSh.RegistRemove(ListenerUri)
+                        Listener.Close()
+                    End If
+                    Listener = New HttpListener()
+                    If NetSh.RegistAddress(ListenerUri) = True Then
+                        Thread.Sleep(200)
+                        Listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous
+                        Listener.Prefixes.Add(ListenerUri)
+                        Listener.Start()
+                        Dim CallBackDelegate As AsyncCallback = AddressOf ListenerHandle
+                        Listener.BeginGetContext(CallBackDelegate, Listener)
+                        textBoxOutput.Text += $"监听中....{Environment.NewLine}"
+                    Else
+                        textBoxOutput.Text += $"注册URL失败！{Environment.NewLine}"
+                    End If
                 End If
             End If
         Catch ex As Exception
@@ -94,10 +99,12 @@ Public Class MainForm
         End If
     End Sub
     Private Sub textBoxUrl_TextChanged(sender As Object, e As EventArgs) Handles textBoxUrl.TextChanged
-        Dim port = Convert.ToInt32(textBoxUrl.Text)
-        If port < 0 Or port > 65535 Then
-            textBoxOutput.Text += $"端口号必须在0-65535的范围内！{Environment.NewLine}"
-            textBoxUrl.Text = "0"
+        If String.IsNullOrEmpty(textBoxUrl.Text) = False Then
+            Dim port = Convert.ToInt32(textBoxUrl.Text)
+            If port < 0 Or port > 65535 Then
+                textBoxOutput.Text += $"端口号必须在0-65535的范围内！{Environment.NewLine}"
+                textBoxUrl.Text = "0"
+            End If
         End If
     End Sub
 End Class

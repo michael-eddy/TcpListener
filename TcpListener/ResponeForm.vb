@@ -50,9 +50,9 @@ Public Class ResponeForm
         Close()
     End Sub
     Private Sub ResponeForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ComboBoxBody.SelectedIndex = 0
+        ComboBoxEncoding.SelectedIndex = 0
         ComboBoxStatusCode.SelectedIndex = 2
         ComboBoxContentType.SelectedIndex = 4
-        ComboBoxEncoding.SelectedIndex = 0
-        ComboBoxBody.SelectedIndex = 0
     End Sub
 End Class

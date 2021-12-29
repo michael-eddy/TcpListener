@@ -1,4 +1,6 @@
-﻿Public Class NetSh
+﻿Imports System.Net.NetworkInformation
+
+Public Class NetSh
     Public Shared Function RegistAddress(ip As String) As Boolean
         Dim cmd = $"netsh http add urlacl url={ip} user=Everyone&exit"
         RegistAddress = Excute(cmd)
@@ -26,5 +28,16 @@
         Catch ex As Exception
             Excute = False
         End Try
+    End Function
+    Public Shared Function IsUsed(port As String) As Boolean
+        Dim inUse = False
+        Dim portInt = CInt(port)
+        Dim ipProperties = IPGlobalProperties.GetIPGlobalProperties()
+        Dim ipEndPoints = ipProperties.GetActiveTcpListeners()
+        For Each endPoint In ipEndPoints
+            If endPoint.Port = portInt Then Exit For
+            inUse = True
+        Next
+        IsUsed = inUse
     End Function
 End Class
