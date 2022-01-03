@@ -1,25 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
+    <Authors>michael-eddy</Authors>
     <OutputType>WinExe</OutputType>
+    <Company>michael-eddy</Company>
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <UseWindowsForms>true</UseWindowsForms>
+    <NeutralLanguage>zh-Hans</NeutralLanguage>
     <RootNamespace>TcpListener</RootNamespace>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>TcpListener.MainForm</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Authors>michael-eddy</Authors>
-    <Company>michael-eddy</Company>
-    <NeutralLanguage>zh-Hans</NeutralLanguage>
-    <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Import Include="System.Drawing" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
   </ItemGroup>
 </Project>

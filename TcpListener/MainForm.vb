@@ -15,16 +15,16 @@ Public Class MainForm
         Try
             If String.IsNullOrEmpty(textBoxUrl.Text) = False Then
                 ListenerUri = $"http://*:{textBoxUrl.Text}/"
-                If NetSh.IsUsed(textBoxUrl.Text) Then
+                If textBoxUrl.Text.IsUsed() Then
                     textBoxOutput.Text += $"{textBoxUrl.Text}端口已被占用！{Environment.NewLine}"
                     textBoxUrl.Text = "0"
                 Else
                     If IsNothing(Listener) = False Then
-                        NetSh.RegistRemove(ListenerUri)
+                        ListenerUri.RegistRemove()
                         Listener.Close()
                     End If
                     Listener = New HttpListener()
-                    If NetSh.RegistAddress(ListenerUri) = True Then
+                    If ListenerUri.RegistAddress() = True Then
                         Thread.Sleep(200)
                         Listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous
                         Listener.Prefixes.Add(ListenerUri)
@@ -84,7 +84,7 @@ Public Class MainForm
         Try
             textBoxOutput.Text = String.Empty
             If IsNothing(Listener) = False Then
-                NetSh.RegistRemove(ListenerUri)
+                ListenerUri.RegistRemove()
                 Listener.Close()
             End If
         Catch ex As Exception

@@ -1,15 +1,19 @@
 ﻿Imports System.Net.NetworkInformation
+Imports System.Runtime.CompilerServices
 
-Public Class NetSh
-    Public Shared Function RegistAddress(ip As String) As Boolean
+Module NetSh
+    <Extension()>
+    Public Function RegistAddress(ip As String) As Boolean
         Dim cmd = $"netsh http add urlacl url={ip} user=Everyone&exit"
-        RegistAddress = Excute(cmd)
+        RegistAddress = cmd.Excute()
     End Function
-    Public Shared Function RegistRemove(ip As String) As Boolean
+    <Extension()>
+    Public Function RegistRemove(ip As String) As Boolean
         Dim cmd = $"netsh http delete urlacl url={ip}&exit"
-        RegistRemove = Excute(cmd)
+        RegistRemove = cmd.Excute()
     End Function
-    Public Shared Function Excute(cmd As String) As Boolean
+    <Extension()>
+    Public Function Excute(cmd As String) As Boolean
         Try
             Dim process = New Process()
             process.StartInfo.FileName = "cmd.exe"
@@ -29,7 +33,8 @@ Public Class NetSh
             Excute = False
         End Try
     End Function
-    Public Shared Function IsUsed(port As String) As Boolean
+    <Extension()>
+    Public Function IsUsed(port As String) As Boolean
         Dim inUse = False
         Dim portInt = CInt(port)
         Dim ipProperties = IPGlobalProperties.GetIPGlobalProperties()
@@ -40,4 +45,4 @@ Public Class NetSh
         Next
         IsUsed = inUse
     End Function
-End Class
+End Module
